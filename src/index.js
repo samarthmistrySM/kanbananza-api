@@ -42,6 +42,11 @@ const css = fs.readFileSync(
 
 const options = {
   customCss: css,
+  customfavIcon: "/api-doc/swagger-ui/favicon-32x32.png",
+  customSiteTitle: "Kanbananza API",
+  swaggerOptions: {
+    url: "/api-doc/swagger.json",
+  },
 };
 
 import express from "express";
@@ -61,13 +66,10 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  "/api-doc/swagger-ui", // serve static assets here
-  express.static("node_modules/swagger-ui-dist")
-);
+app.use("/api-doc/swagger-ui", express.static("node_modules/swagger-ui-dist"));
 app.use(
   "/api-doc",
-  swaggerUi.serveFiles(swaggerDocument, {}),
+  swaggerUi.serveFiles(swaggerDocument, { redirect: false }),
   swaggerUi.setup(swaggerDocument, options)
 );
 
