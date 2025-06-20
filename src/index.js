@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/swagger-ui", express.static("public"));
 
 app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument,{
-    customCssUrl: "/swagger-ui.css",
+    customCssUrl: "/swagger-ui/swagger-ui.css",
     explorer: true
 })
 );
