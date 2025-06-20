@@ -34,12 +34,18 @@ if (!fs.existsSync(swaggerPath)) {
   await swaggerAutogen()(swaggerPath, routes, doc);
 }
 
-// ✅ Now import it safely
 const swaggerDocument = JSON.parse(fs.readFileSync(swaggerPath));
+const css = fs.readFileSync(
+  path.resolve(__dirname, "../node_modules/swagger-ui-dist/swagger-ui.css"),
+  "utf8"
+);
+
+const options = {
+  customCss: css,
+};
 
 import express from "express";
 import dotenv from "dotenv";
-// import swaggerUi from "swagger-ui-express";
 
 import cors from "cors";
 import routes from "./routes/index.js";
@@ -47,8 +53,6 @@ import connectDb from "./config/connectDB.js";
 import errorHandler from "./middleware/errorHandler.js";
 
 const isVercel = process.env.VERCEL === "1";
-
-// import swaggerDocument from "../swagger-output.json" with { type: "json" };
 
 dotenv.config();
 const app = express();
@@ -58,9 +62,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
+  "/api-doc/swagger-ui", // serve static assets here
+  express.static("node_modules/swagger-ui-dist")
+);
+app.use(
   "/api-doc",
   swaggerUi.serveFiles(swaggerDocument, {}),
-  swaggerUi.setup(swaggerDocument, { explorer: true })
+  swaggerUi.setup(swaggerDocument, options)
 );
 
 app.use("/api", routes());
