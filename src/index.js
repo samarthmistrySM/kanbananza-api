@@ -7,7 +7,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const swaggerPath = path.join(__dirname, "../swagger-output.json");
 
-// 👇 Generate Swagger JSON if missing
 if (!fs.existsSync(swaggerPath)) {
   const { default: swaggerAutogen } = await import("swagger-autogen");
 
@@ -18,7 +17,7 @@ if (!fs.existsSync(swaggerPath)) {
     },
     host:
       process.env.NODE_ENV === "production"
-        ? "your-vercel-project.vercel.app/api"
+        ? "https://kanbananza-api.vercel.app/api"
         : "localhost:3000/api",
     schemes: [process.env.NODE_ENV === "production" ? "https" : "http"],
     securityDefinitions: {
@@ -63,6 +62,7 @@ app.use(
   swaggerUi.serveFiles(swaggerDocument, {}),
   swaggerUi.setup(swaggerDocument, { explorer: true })
 );
+
 app.use("/api", routes());
 app.use(errorHandler);
 
