@@ -1,22 +1,14 @@
 {
   "version": 2,
-  "builds": [{ "src": "src/index.js", "use": "@vercel/node" }],
-  "routes": [
+  "builds": [
     {
-      "src": "/api-doc/swagger-ui/(.*)",
-      "dest": "node_modules/swagger-ui-dist/$1"
-    },
-    {
-      "src": "/api-doc/(.*)",
-      "dest": "src/index.js"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "src/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "src/index.js"
+      "src": "src/index.js",
+      "use": "@vercel/node"
     }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "src/index.js" },
+    { "src": "/api-doc/(.*)", "dest": "src/index.js" },
+    { "src": "/(.*)", "dest": "src/index.js" }
   ]
 }
