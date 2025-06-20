@@ -14,8 +14,12 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/api-doc/swagger-ui", express.static("../node_modules/swagger-ui-dist"));
-app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/swagger-ui", express.static("public/swagger-ui"));
+app.use("/api-doc", swaggerUi.serve, swaggerUi.setup(swaggerDocument,{
+    customCssUrl: "/swagger-ui/swagger-ui.css",
+    explorer: true
+})
+);
 app.use("/api", routes());
 app.use(errorHandler);
 
