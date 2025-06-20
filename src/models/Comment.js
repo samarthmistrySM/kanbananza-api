@@ -5,6 +5,7 @@ const commentSchema = new Schema(
   {
     card: { type: Schema.Types.ObjectId, ref: "Card", required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    board: { type: Schema.Types.ObjectId, ref: "Board", required: true },
     text: { type: String, required: true },
   },
   { timestamps: true }

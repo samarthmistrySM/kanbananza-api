@@ -27,6 +27,14 @@ cardSchema.pre("save", async function (next) {
     this.order =
       lastCard && typeof lastCard.order === "number" ? lastCard.order + 1 : 0;
   }
+
+  if (this.isModified()) {
+    await mongoose.model("Board").findByIdAndUpdate(
+      this.board,
+      { $set: { updatedAt: new Date() } }
+    );
+  }
+  next();
   next();
 });
 

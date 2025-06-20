@@ -13,6 +13,9 @@ const userSchema = new Schema(
     },
     password: { type: String, required: true },
     boards: [{ type: Schema.Types.ObjectId, ref: "Board" }],
+    avatar: { type: Schema.Types.ObjectId, ref: "Avatar" },
+    role: { type: String, trim: true },
+    invitations: [{ type: Schema.Types.ObjectId, ref: "Invitation" }]
   },
   { timestamps: true }
 );

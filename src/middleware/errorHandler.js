@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err);
+  console.error(err.message || err);
 
   const status = err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR;
   const message = err.message || "Internal server error";

@@ -18,6 +18,27 @@ boardsRouter.get(
   boardController.getBoard
 );
 
+boardsRouter.get(
+  '/category/:category',
+  authenticateToken,
+  authorizeUser,
+  boardController.getCategoryBoards
+)
+
+boardsRouter.get(
+  "/collaborators/:boardId",
+  authenticateToken,
+  authorizeUser,
+  boardController.getCollaborators
+);
+
+boardsRouter.put(
+  "/update-board",
+  authenticateToken,
+  authorizeUser,
+  boardController.updateBoard
+)
+
 boardsRouter.post(
   "/create-board",
   authenticateToken,

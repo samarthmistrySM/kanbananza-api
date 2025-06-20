@@ -18,6 +18,20 @@ coulmnsRouter.get(
   columnController.getColumn
 );
 
+coulmnsRouter.patch(
+  "/move-column/:columnId",
+  authenticateToken,
+  authorizeUser,
+  columnController.moveColumn
+);
+
+coulmnsRouter.put(
+  "/update-column/:columnId",
+  authenticateToken,
+  authorizeUser,
+  columnController.updateColumn
+)
+
 coulmnsRouter.post(
   "/create-column",
   authenticateToken,

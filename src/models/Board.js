@@ -8,6 +8,12 @@ const boardSchema = new Schema(
     owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
     collaborators: [{ type: Schema.Types.ObjectId, ref: "User" }],
     columns: [{ type: Schema.Types.ObjectId, ref: "Column" }],
+    category: {
+      type: String,
+      enum: ["personal", "work", "education", "marketing", "development", "other"],
+      default: "other",
+      required: true,
+    },
   },
   { timestamps: true }
 );

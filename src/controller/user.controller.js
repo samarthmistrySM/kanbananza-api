@@ -4,6 +4,8 @@ import jwt from "jsonwebtoken";
 
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
+import Avatar from "../models/Avatar.js";
+import mongoose from "mongoose";
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -78,6 +80,7 @@ export const signUp = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email });
+    const avatars = await Avatar.find();
 
     if (user) {
       return next(
@@ -92,6 +95,7 @@ export const signUp = async (req, res, next) => {
       email,
       password: hashedPassword,
       name,
+      avatar: avatars[0]._id,
     });
 
     return res
@@ -105,12 +109,71 @@ export const signUp = async (req, res, next) => {
 export const getUser = async (req, res, next) => {
   const userId = req.user.userId;
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId)
+      .populate({
+        path: "boards",
+        options: { sort: { updatedAt: -1 } },
+      })
+      .populate("avatar");
     if (!user) {
       return next(new ApiError("user not found!", StatusCodes.NOT_FOUND));
     }
 
-    return res.status(StatusCodes.OK).json({ message: "user found!", user });
+    return res.status(StatusCodes.OK).json({
+      message: "user found!",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        boards: user.boards,
+        avatar: user.avatar,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateProfile = async (req, res, next) => {
+  const { name, role } = req.body;
+  const userId = req.user.userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(new ApiError("user not found!", StatusCodes.NOT_FOUND));
+    }
+
+    let updatedRole = role ? role : null;
+
+    await user.updateOne({ name, role: updatedRole });
+
+    return res.status(StatusCodes.OK).json({ message: "User updated" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateAvatar = async (req, res, next) => {
+  const userId = req.user.userId;
+  const { avatarId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(avatarId)) {
+    return next(new ApiError("Invalid avatar ID.", StatusCodes.BAD_REQUEST));
+  }
+
+  try {
+    const avatar = await Avatar.findById(avatarId);
+
+    if (!avatar) {
+      return next(new ApiError("avatar not found!", StatusCodes.NOT_FOUND));
+    }
+
+    await User.findByIdAndUpdate(userId, { avatar: avatar._id });
+
+    return res.status(StatusCodes.OK).json({ message: "avatar updated!" });
   } catch (error) {
     next(error);
   }
@@ -122,4 +185,4 @@ export const logout = async (req, res) => {
     .json({ message: "Please remove the token from client storage." });
 };
 
-export default { login, signUp, getUser, logout };
+export default { login, signUp, updateAvatar, updateProfile, getUser, logout };
