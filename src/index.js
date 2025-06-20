@@ -29,7 +29,7 @@ const startServer = async () => {
         });
     } catch (error) {
         console.error('Error starting server:', error.message);
-        process.exit(1);
+        // process.exit(1);
     }
 }
 
