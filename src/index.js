@@ -28,9 +28,9 @@ const startServer = async () => {
     try {
         await connectDb(process.env.MONGO_URL);
 
-        app.listen(PORT, async () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
+        // app.listen(PORT, async () => {
+        //     console.log(`Server is running on port ${PORT}`);
+        // });
     } catch (error) {
         console.error('Error starting server:', error.message);
         process.exit(1);
@@ -38,3 +38,5 @@ const startServer = async () => {
 }
 
 startServer();
+
+export default app; 
