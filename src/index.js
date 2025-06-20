@@ -46,6 +46,9 @@ import cors from "cors";
 import routes from "./routes/index.js";
 import connectDb from "./config/connectDB.js";
 import errorHandler from "./middleware/errorHandler.js";
+
+const isVercel = process.env.VERCEL === "1";
+
 // import swaggerDocument from "../swagger-output.json" with { type: "json" };
 
 dotenv.config();
@@ -67,9 +70,11 @@ const startServer = async () => {
   try {
     await connectDb(process.env.MONGO_URL);
 
-    // app.listen(PORT, async () => {
-    //     console.log(`Server is running on port ${PORT}`);
-    // });
+    if (!isVercel) {
+      app.listen(PORT, () => {
+        console.log(`🚀 Server is running on http://localhost:${PORT}`);
+      });
+    }
   } catch (error) {
     console.error("Error starting server:", error.message);
     process.exit(1);
