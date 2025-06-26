@@ -15,7 +15,8 @@ const userSchema = new Schema(
     boards: [{ type: Schema.Types.ObjectId, ref: "Board" }],
     avatar: { type: Schema.Types.ObjectId, ref: "Avatar" },
     role: { type: String, trim: true },
-    invitations: [{ type: Schema.Types.ObjectId, ref: "Invitation" }]
+    invitations: [{ type: Schema.Types.ObjectId, ref: "Invitation" }],
+    deviceToken: { type: String, default: null },
   },
   { timestamps: true }
 );

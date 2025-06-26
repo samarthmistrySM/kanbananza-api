@@ -16,6 +16,13 @@ usersRouter.get(
 );
 
 usersRouter.patch(
+  "/update-token",
+  authenticateToken,
+  authorizeUser,
+  userController.updateToken
+);
+
+usersRouter.patch(
   "/update-avatar/:avatarId",
   authenticateToken,
   authorizeUser,
@@ -27,7 +34,7 @@ usersRouter.put(
   authenticateToken,
   authorizeUser,
   userController.updateProfile
-)
+);
 
 usersRouter.delete(
   "/logout",
@@ -36,4 +43,4 @@ usersRouter.delete(
   userController.logout
 );
 
-export default usersRouter; 
+export default usersRouter;

@@ -7,7 +7,7 @@ export const authenticateToken = (req, res, next) => {
   // #swagger.security = [{ "bearerAuth": [] }]
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-    
+
   if (token === undefined) {
     console.log("No token provided");
     return next(new ApiError("Not Authorized!", StatusCodes.UNAUTHORIZED));
@@ -26,11 +26,15 @@ export const authenticateToken = (req, res, next) => {
 export const authorizeUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.userId);
-        
+
     if (!user) {
       return next(new ApiError("user not found!", StatusCodes.NOT_FOUND));
     }
-    req.user = {userId: user._id, name: user.name, email: user.email};
+    req.user = {
+      userId: user._id,
+      name: user.name,
+      email: user.email,
+    };
     next();
   } catch (error) {
     next(error);

@@ -56,8 +56,6 @@ export const getBoard = async (req, res, next) => {
       return next(new ApiError("board not found!", StatusCodes.BAD_REQUEST));
     }
 
-    console.log(board.collaborators, userId);
-
     const isCollaborator = board.collaborators.some(
       (collabId) => collabId.toString() === userId.toString()
     );

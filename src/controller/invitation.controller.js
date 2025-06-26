@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Board from "../models/Board.js";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../utils/ApiError.js";
+import fcmService from "../services/fcmService.js";
 
 export const getInvitations = async (req, res, next) => {
   const userId = req.user.userId;
@@ -29,15 +30,23 @@ export const getInvitations = async (req, res, next) => {
 
 export const sendInvite = async (req, res, next) => {
   try {
-    const { toUserId, boardId } = req.body;
-    const fromUserId = req.user.userId;
+    const { email, boardId } = req.body;
+    const { userId } = req.user;
+
+    let fromUserId = userId;
 
     const board = await Board.findById(boardId);
     if (!board)
       return next(new ApiError("board not found", StatusCodes.NOT_FOUND));
 
+    const toUser = await User.findOne({ email });
+
+    if (!toUser) {
+      return next(new ApiError("User not found!", StatusCodes.NOT_FOUND ));
+    }
+
     const isOwnerOrCollaborator = board.collaborators.some(
-      (collabId) => collabId.toString() === toUserId.toString()
+      (collabId) => collabId.toString() === toUser._id.toString()
     );
 
     if (isOwnerOrCollaborator)
@@ -50,7 +59,7 @@ export const sendInvite = async (req, res, next) => {
 
     const existing = await Invitation.findOne({
       from: fromUserId,
-      to: toUserId,
+      to: toUser._id,
       board: boardId,
       status: "pending",
     });
@@ -64,11 +73,17 @@ export const sendInvite = async (req, res, next) => {
 
     const invitation = await Invitation.create({
       from: fromUserId,
-      to: toUserId,
+      to: toUser._id,
       board: boardId,
     });
 
-    await User.findByIdAndUpdate(toUserId, {
+    await fcmService.sendNotification(
+      toUser.deviceToken,
+      `Board Invitation`,
+      `You are invited to ${board.title} board`
+    );
+
+    await User.findByIdAndUpdate(toUser._id, {
       $addToSet: { invitations: invitation._id },
     });
 

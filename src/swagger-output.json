@@ -5,21 +5,25 @@
     "description": "Kanbananza a Scrum board API",
     "version": "1.0.0"
   },
-  "host": "kanbananza-api.vercel.app/api",
+  "host": "localhost:3000/api",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": [
+    "http"
+  ],
   "securityDefinitions": {
     "bearerAuth": {
       "type": "apiKey",
       "name": "Authorization",
       "in": "header",
-      "description": "Enter your bearer token as **Bearer &lt;token&gt;**"
+      "description": "Enter your bearer token in the format **Bearer &lt;token&gt;**"
     }
   },
   "paths": {
     "/users/login": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -47,7 +51,9 @@
     },
     "/users/signup": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -78,7 +84,9 @@
     },
     "/users/profile": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -99,9 +107,48 @@
         ]
       }
     },
+    "/users/update-token": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/users/update-avatar/{avatarId}": {
       "patch": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -130,7 +177,9 @@
     },
     "/users/update-user": {
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -168,7 +217,9 @@
     },
     "/users/logout": {
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "description": "",
         "parameters": [
           {
@@ -191,7 +242,9 @@
     },
     "/boards/get-all": {
       "get": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -214,7 +267,9 @@
     },
     "/boards/{boardId}": {
       "get": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -241,7 +296,9 @@
         ]
       },
       "delete": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -270,7 +327,9 @@
     },
     "/boards/category/{category}": {
       "get": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -299,7 +358,9 @@
     },
     "/boards/collaborators/{boardId}": {
       "get": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -328,7 +389,9 @@
     },
     "/boards/update-board": {
       "put": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -369,7 +432,9 @@
     },
     "/boards/create-board": {
       "post": {
-        "tags": ["Boards"],
+        "tags": [
+          "Boards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -410,7 +475,9 @@
     },
     "/invitations/": {
       "get": {
-        "tags": ["Invitations"],
+        "tags": [
+          "Invitations"
+        ],
         "description": "",
         "parameters": [
           {
@@ -433,7 +500,9 @@
     },
     "/invitations/send": {
       "post": {
-        "tags": ["Invitations"],
+        "tags": [
+          "Invitations"
+        ],
         "description": "",
         "parameters": [
           {
@@ -447,7 +516,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "toUserId": {
+                "email": {
                   "example": "any"
                 },
                 "boardId": {
@@ -471,7 +540,9 @@
     },
     "/invitations/{invitationId}/accept": {
       "post": {
-        "tags": ["Invitations"],
+        "tags": [
+          "Invitations"
+        ],
         "description": "",
         "parameters": [
           {
@@ -500,7 +571,9 @@
     },
     "/invitations/{invitationId}/reject": {
       "post": {
-        "tags": ["Invitations"],
+        "tags": [
+          "Invitations"
+        ],
         "description": "",
         "parameters": [
           {
@@ -529,7 +602,9 @@
     },
     "/columns/get-all/{boardId}": {
       "get": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -558,7 +633,9 @@
     },
     "/columns/{columnId}": {
       "get": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -585,7 +662,9 @@
         ]
       },
       "delete": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -614,7 +693,9 @@
     },
     "/columns/move-column/{columnId}": {
       "patch": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -658,7 +739,9 @@
     },
     "/columns/update-column/{columnId}": {
       "put": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -699,7 +782,9 @@
     },
     "/columns/create-column": {
       "post": {
-        "tags": ["Columns"],
+        "tags": [
+          "Columns"
+        ],
         "description": "",
         "parameters": [
           {
@@ -737,7 +822,9 @@
     },
     "/cards/{cardId}": {
       "get": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -764,7 +851,9 @@
         ]
       },
       "delete": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -793,7 +882,9 @@
     },
     "/cards/move-card/{cardId}": {
       "patch": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -837,7 +928,9 @@
     },
     "/cards/add-assignee/{cardId}": {
       "patch": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -878,7 +971,9 @@
     },
     "/cards/update-card/{cardId}": {
       "put": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -928,7 +1023,9 @@
     },
     "/cards/create-card": {
       "post": {
-        "tags": ["Cards"],
+        "tags": [
+          "Cards"
+        ],
         "description": "",
         "parameters": [
           {
@@ -978,7 +1075,9 @@
     },
     "/comments/{cardId}": {
       "get": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1007,7 +1106,9 @@
     },
     "/comments/create-comment": {
       "post": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1045,7 +1146,9 @@
     },
     "/comments/{commentId}": {
       "delete": {
-        "tags": ["Comments"],
+        "tags": [
+          "Comments"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1074,7 +1177,9 @@
     },
     "/activities/": {
       "get": {
-        "tags": ["Activities"],
+        "tags": [
+          "Activities"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1097,7 +1202,9 @@
     },
     "/activities/{boardId}": {
       "get": {
-        "tags": ["Activities"],
+        "tags": [
+          "Activities"
+        ],
         "description": "",
         "parameters": [
           {
@@ -1126,7 +1233,9 @@
     },
     "/avatars/get-all": {
       "get": {
-        "tags": ["Avatars"],
+        "tags": [
+          "Avatars"
+        ],
         "description": "",
         "parameters": [
           {

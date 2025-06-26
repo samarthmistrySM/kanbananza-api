@@ -6,6 +6,7 @@ import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import Avatar from "../models/Avatar.js";
 import mongoose from "mongoose";
+import fcmService from "../services/fcmService.js";
 
 export const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -179,10 +180,32 @@ export const updateAvatar = async (req, res, next) => {
   }
 };
 
+export const updateToken = async (req, res, next) => {
+  const { token } = req.body;
+  const userId = req.user.userId;
+  try {
+    const user = await User.findById(userId);
+
+    await user.updateOne({ deviceToken: token });
+
+    res.status(StatusCodes.OK).json({ message: "Token Updated!" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const logout = async (req, res) => {
   return res
     .status(StatusCodes.OK)
     .json({ message: "Please remove the token from client storage." });
 };
 
-export default { login, signUp, updateAvatar, updateProfile, getUser, logout };
+export default {
+  login,
+  signUp,
+  updateAvatar,
+  updateProfile,
+  getUser,
+  logout,
+  updateToken,
+};
